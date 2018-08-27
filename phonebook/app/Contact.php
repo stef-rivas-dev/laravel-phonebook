@@ -9,7 +9,7 @@ class Contact extends Model
 {
     const DEFAULT_LABEL = '[TODO: Label Me]';
 
-    protected $fillable = ['phone_number', 'identity', 'user_id', 'email'];
+    protected $fillable = ['phone_number', 'label', 'user_id', 'email'];
 
     /**
      * Set relationship of single user to multiple contacts
