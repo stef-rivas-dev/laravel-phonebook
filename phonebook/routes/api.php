@@ -19,21 +19,33 @@ use Illuminate\Http\Request;
 /*
  User routes
 */
-Route::middleware('auth:api')->group(function() {
-    Route::get('user', 'UserController@show');
-    Route::get('users/{user}/contacts', 'UserController@listContacts');
-    Route::delete('users/{user}', 'UserController@delete');
+Route::name('users.')->group(function() {
+    Route::middleware(['auth:api'])->group(function() {
+        Route::get('users/{user}', 'UserController@show')
+            ->name('show');
+        Route::get('users/{user}/contacts', 'UserController@listContacts')
+            ->name('listContacts');
+        Route::delete('users/{user}', 'UserController@delete')
+            ->name('delete');
+    });
 });
 
 /*
  Contacts routes
 */
-Route::middleware(['auth:api'])->group(function() {
-    Route::get('contacts', 'ContactController@index');
-    Route::get('contacts/{contact}', 'ContactController@show');
-    Route::post('contacts', 'ContactController@store');
-    Route::put('contacts/{id}', 'ContactController@update');
-    Route::delete('contacts/{contact}', 'ContactController@delete');
+Route::name('contacts.')->group(function() {
+    Route::middleware(['auth:api'])->group(function() {
+        Route::get('contacts', 'ContactController@index')
+            ->name('index');
+        Route::get('contacts/{contact}', 'ContactController@show')
+            ->name('show');
+        Route::post('contacts', 'ContactController@store')
+            ->name('store');
+        Route::put('contacts/{id}', 'ContactController@update')
+            ->name('update');
+        Route::delete('contacts/{contact}', 'ContactController@delete')
+            ->name('delete');
+    });
 });
 
 Route::post('register', 'Auth\RegisterController@register');

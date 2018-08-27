@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Contact;
+use App\Http\Resources\ContactResource;
+use App\Http\Resources\ContactsResource;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -14,7 +16,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return Contact::all();
+        return new ContactsResource(Contact::paginate());
     }
 
     /**
@@ -24,7 +26,8 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
-        return $contact;
+        ContactResource::withoutWrapping();
+        return new ContactResource($contact);
     }
 
     /**
@@ -44,7 +47,7 @@ class ContactController extends Controller
         // Return contact object
         if ($asObj) { return $contact; }
 
-        return response()->json($contact, 201);
+        return response(new ContactResource($contact))->setStatusCode(201);
     }
 
     /**
@@ -74,7 +77,7 @@ class ContactController extends Controller
             $contact->update($request->all());
         }
 
-        return response()->json($contact, $statusCode);
+        return response(new ContactResource($contact))->setStatusCode($statusCode);
     }
 
     /**

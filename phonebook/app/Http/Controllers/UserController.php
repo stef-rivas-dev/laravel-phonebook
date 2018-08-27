@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Http\Resources\ContactsResource;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -15,7 +17,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return $user;
+        UserResource::withoutWrapping();
+        return new UserResource($user);
     }
 
     /**
@@ -25,7 +28,7 @@ class UserController extends Controller
     public function listContacts(User $user)
     {
         if ($user instanceof User) {
-            return response($user->contacts);
+            return new ContactsResource($user->contacts);
         } else {
             return response()->toJson([
                 'data' => [],
