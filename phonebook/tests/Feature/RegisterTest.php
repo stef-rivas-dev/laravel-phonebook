@@ -16,8 +16,12 @@ class RegisterTest extends TestCase
             'password' => '123456',
             'password_confirmation' => '123456',
         ];
+        $headers = [
+            'Content-Type' => 'application/vnd.api+json',
+            'Accept' => 'application/vnd.api+json',
+        ];
 
-        $this->json('post', TestCase::API_PREFIX . '/register', $payload)
+        $this->json('post', TestCase::API_PREFIX . '/register', $payload, $headers)
             ->assertStatus(201)
             ->assertJsonStructure([
                 'data' => [
@@ -33,7 +37,12 @@ class RegisterTest extends TestCase
 
     public function testsRequiresPasswordEmailAndName()
     {
-        $this->json('post', TestCase::API_PREFIX . '/register')
+        $headers = [
+            'Content-Type' => 'application/vnd.api+json',
+            'Accept' => 'application/vnd.api+json',
+        ];
+
+        $this->json('post', TestCase::API_PREFIX . '/register', [], $headers)
             ->assertStatus(422)
             ->assertJson([
                 'message' => 'The given data was invalid.',
@@ -58,8 +67,12 @@ class RegisterTest extends TestCase
             'email' => 'mike@test.com',
             'password' => '1234',
         ];
+        $headers = [
+            'Content-Type' => 'application/vnd.api+json',
+            'Accept' => 'application/vnd.api+json',
+        ];
 
-        $this->json('post', TestCase::API_PREFIX . '/register', $payload)
+        $this->json('post', TestCase::API_PREFIX . '/register', $payload, $headers)
             ->assertStatus(422)
             ->assertJson([
                 'message' => 'The given data was invalid.',

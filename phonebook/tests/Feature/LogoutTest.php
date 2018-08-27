@@ -13,7 +13,11 @@ class LogoutTest extends TestCase
     {
         $user = factory(User::class)->create(['email' => 'user@test.com']);
         $token = $user->generateToken();
-        $headers = ['Authorization' => "Bearer $token"];
+        $headers = [
+            'Authorization' => "Bearer $token",
+            'Content-Type' => 'application/vnd.api+json',
+            'Accept' => 'application/vnd.api+json',
+        ];
 
         $this->json('get', TestCase::API_PREFIX . '/contacts', [], $headers)->assertStatus(200);
         $this->json('post', TestCase::API_PREFIX . '/logout', [], $headers)->assertStatus(200);
@@ -28,7 +32,11 @@ class LogoutTest extends TestCase
         // Simulating login
         $user = factory(User::class)->create(['email' => 'user@test.com']);
         $token = $user->generateToken();
-        $headers = ['Authorization' => "Bearer $token"];
+        $headers = [
+            'Authorization' => "Bearer $token",
+            'Content-Type' => 'application/vnd.api+json',
+            'Accept' => 'application/vnd.api+json',
+        ];
 
         // Simulating logout
         $user->api_token = null;

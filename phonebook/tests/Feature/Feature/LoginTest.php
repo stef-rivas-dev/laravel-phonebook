@@ -11,7 +11,12 @@ class LoginTest extends TestCase
 {
     public function testRequiresEmailAndLogin()
     {
-        $this->json('POST', TestCase::API_PREFIX . '/login')
+        $headers = [
+            'Content-Type' => 'application/vnd.api+json',
+            'Accept' => 'application/vnd.api+json',
+        ];
+
+        $this->json('POST', TestCase::API_PREFIX . '/login', [], $headers)
             ->assertStatus(422)
             ->assertJson([
                 "message" => "The given data was invalid.",
@@ -33,9 +38,13 @@ class LoginTest extends TestCase
             'password' => bcrypt('1234'),
         ]);
 
+        $headers = [
+            'Content-Type' => 'application/vnd.api+json',
+            'Accept' => 'application/vnd.api+json',
+        ];
         $payload = ['email' => 'test@test.com', 'password' => '1234'];
 
-        $this->json('POST', TestCase::API_PREFIX . '/login', $payload)
+        $this->json('POST', TestCase::API_PREFIX . '/login', $payload, $headers)
             ->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
